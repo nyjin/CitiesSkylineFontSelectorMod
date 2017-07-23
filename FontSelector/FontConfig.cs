@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
-using ColossalFramework.IO;
 using CSLMusicMod.LitJson;
 using UnityEngine;
 
@@ -17,9 +15,18 @@ namespace FontSelector
             public int Size { get; set; }
         }
 
+        static FontConfig()
+        {
+            var osFonts = Font.GetOSInstalledFontNames();
+            var userFonts = new[] {"Open Sans"};
+            Families = new string[osFonts.Length + userFonts.Length];
+            Array.Copy(osFonts, Families, osFonts.Length);
+            Array.Copy(userFonts, 0, Families, osFonts.Length, userFonts.Length);
+        }
+
         public const string ConfigFileName = "FileSelector.json";
 
-        public static string[] Families = Font.GetOSInstalledFontNames().ToArray();
+        public static string[] Families;
 
         public static string[] Sizes =
         {
